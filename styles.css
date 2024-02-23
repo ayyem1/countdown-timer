@@ -78,3 +78,14 @@ body {
   padding-bottom: 10px;
   font-size: 3rem;
 }
+
+#abort {
+  background-color: red;
+  margin-top: 15px;
+  padding: 10px;
+  font-size: 16px;
+}
+
+#abort:hover {
+  cursor: pointer;
+}
