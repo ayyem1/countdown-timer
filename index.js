@@ -1,5 +1,5 @@
 import { of, interval } from "rxjs";
-import { mapTo, scan, filter } from "rxjs/operators";
+import { mapTo, scan, filter, takeWhile } from "rxjs/operators";
 
 /*
  * Any code samples you want to play with can go in this file.
@@ -18,10 +18,11 @@ counter
     scan((accumulator, current) => {
       return accumulator + current;
     }, 10),
-    filter((value) => value >= 0)
+    takeWhile((value) => value > 0, true)
   )
   .subscribe({
     next: (val) => {
+      console.log(val);
       countdown.innerHTML = val;
       if (!val) {
         message.innerHTML = "Liftoff!";
