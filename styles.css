@@ -79,11 +79,19 @@ body {
   font-size: 3rem;
 }
 
-#abort {
-  background-color: red;
-  margin-top: 15px;
-  padding: 10px;
-  font-size: 16px;
+#start, #pause {
+  color: white;
+  margin-top: 10px;
+  padding: 8px 16px;
+  border-radius: 4px;
+}
+
+#pause{
+  background: red;
+}
+
+#start {
+  background: green
 }
 
 #abort:hover {

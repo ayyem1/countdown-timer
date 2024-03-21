@@ -1,5 +1,12 @@
-import { of, interval, fromEvent } from "rxjs";
-import { mapTo, scan, takeWhile, takeUntil } from "rxjs/operators";
+import { of, interval, fromEvent, merge, EMPTY } from "rxjs";
+import {
+  mapTo,
+  scan,
+  takeWhile,
+  switchMap,
+  startWith,
+  map,
+} from "rxjs/operators";
 
 /*
  * Any code samples you want to play with can go in this file.
@@ -8,21 +15,27 @@ import { mapTo, scan, takeWhile, takeUntil } from "rxjs/operators";
  */
 of("Hello", "RxJS").subscribe(console.log);
 
+const COUNTDOWN_FROM = 10;
 const countdown = document.getElementById("countdown");
 const liftoffMessage = document.getElementById("message");
-const abortButton = document.getElementById("abort");
+const pauseButton = document.getElementById("pause");
+const startButton = document.getElementById("start");
 
 const counter = interval(1000);
-const abort = fromEvent(abortButton, "click");
+const pauseClick = fromEvent(pauseButton, "click");
+const startClick = fromEvent(startButton, "click");
 
-counter
+merge(startClick.pipe(mapTo(true)), pauseClick.pipe(mapTo(false)))
   .pipe(
+    switchMap((shouldStart) => {
+      return shouldStart ? counter : EMPTY;
+    }),
     mapTo(-1),
     scan((accumulator, current) => {
       return accumulator + current;
-    }, 10),
-    takeWhile((value) => value > 0, true),
-    takeUntil(abort)
+    }, COUNTDOWN_FROM),
+    takeWhile((value) => value > 0),
+    startWith(COUNTDOWN_FROM)
   )
   .subscribe({
     next: (val) => {
